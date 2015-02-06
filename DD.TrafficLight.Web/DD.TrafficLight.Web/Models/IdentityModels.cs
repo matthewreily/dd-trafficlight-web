@@ -29,5 +29,7 @@ namespace DD.TrafficLight.Web.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<DD.TrafficLight.Web.Models.TrafficLightConfiguration> TrafficLightConfigurations { get; set; }
     }
 }

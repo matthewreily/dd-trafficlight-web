@@ -1,0 +1,51 @@
+﻿@model IEnumerable<DD.TrafficLight.Web.Models.TrafficLightConfiguration>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Red)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Green)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Yellow)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MaintenanceMode)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Red)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Green)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Yellow)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MaintenanceMode)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.TrafficLightID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.TrafficLightID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.TrafficLightID })
+        </td>
+    </tr>
+}
+
+</table>
