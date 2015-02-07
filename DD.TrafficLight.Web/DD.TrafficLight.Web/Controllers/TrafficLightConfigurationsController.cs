@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using DD.TrafficLight.Web.Models;
 
@@ -12,12 +8,11 @@ namespace DD.TrafficLight.Web.Controllers
 {
     public class TrafficLightConfigurationsController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
-
+        private readonly ApplicationDbContext _db = new ApplicationDbContext();
         // GET: TrafficLightConfigurations
         public ActionResult Index()
         {
-            return View(db.TrafficLightConfigurations.ToList());
+            return View(_db.TrafficLightConfigurations.ToList());
         }
 
         // GET: TrafficLightConfigurations/Details/5
@@ -27,7 +22,7 @@ namespace DD.TrafficLight.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            TrafficLightConfiguration trafficLightConfiguration = db.TrafficLightConfigurations.Find(id);
+            var trafficLightConfiguration = _db.TrafficLightConfigurations.Find(id);
             if (trafficLightConfiguration == null)
             {
                 return HttpNotFound();
@@ -46,12 +41,14 @@ namespace DD.TrafficLight.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "TrafficLightID,Red,Green,Yellow,MaintenanceMode")] TrafficLightConfiguration trafficLightConfiguration)
+        public ActionResult Create(
+            [Bind(Include = "TrafficLightID,Red,Green,Yellow,MaintenanceMode")] TrafficLightConfiguration
+                trafficLightConfiguration)
         {
             if (ModelState.IsValid)
             {
-                db.TrafficLightConfigurations.Add(trafficLightConfiguration);
-                db.SaveChanges();
+                _db.TrafficLightConfigurations.Add(trafficLightConfiguration);
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -65,7 +62,7 @@ namespace DD.TrafficLight.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            TrafficLightConfiguration trafficLightConfiguration = db.TrafficLightConfigurations.Find(id);
+            var trafficLightConfiguration = _db.TrafficLightConfigurations.Find(id);
             if (trafficLightConfiguration == null)
             {
                 return HttpNotFound();
@@ -78,12 +75,14 @@ namespace DD.TrafficLight.Web.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "TrafficLightID,Red,Green,Yellow,MaintenanceMode")] TrafficLightConfiguration trafficLightConfiguration)
+        public ActionResult Edit(
+            [Bind(Include = "TrafficLightID,Red,Green,Yellow,MaintenanceMode")] TrafficLightConfiguration
+                trafficLightConfiguration)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(trafficLightConfiguration).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(trafficLightConfiguration).State = EntityState.Modified;
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(trafficLightConfiguration);
@@ -96,7 +95,7 @@ namespace DD.TrafficLight.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            TrafficLightConfiguration trafficLightConfiguration = db.TrafficLightConfigurations.Find(id);
+            var trafficLightConfiguration = _db.TrafficLightConfigurations.Find(id);
             if (trafficLightConfiguration == null)
             {
                 return HttpNotFound();
@@ -109,9 +108,9 @@ namespace DD.TrafficLight.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            TrafficLightConfiguration trafficLightConfiguration = db.TrafficLightConfigurations.Find(id);
-            db.TrafficLightConfigurations.Remove(trafficLightConfiguration);
-            db.SaveChanges();
+            var trafficLightConfiguration = _db.TrafficLightConfigurations.Find(id);
+            _db.TrafficLightConfigurations.Remove(trafficLightConfiguration);
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -119,7 +118,7 @@ namespace DD.TrafficLight.Web.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }
